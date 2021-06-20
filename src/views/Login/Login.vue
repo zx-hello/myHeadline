@@ -69,7 +69,7 @@ export default {
       // 若调用某个方法，若返回值是promise对象，则可以在方法之前加await关键字
       // await 只可以用在aysnc修饰的方法内
       const res = await loginApi(this.form)
-      console.log(res, res.data.data)
+      // console.log(res, res.data.data)
       if (res.data.message === 'OK') {
         // // 以前的普通保存token
         // localStorage.setItem('token', JSON.stringify(res.data.data))
