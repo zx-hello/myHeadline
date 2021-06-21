@@ -16,7 +16,8 @@
     <!-- v-model="active" 绑定当前激活标签对应的索引值，默认情况下启用第一个标签  -->
     <van-tabs v-model="active" sticky offset-top="1.22667rem">
       <van-tab :title="item.name" v-for="item in channels" :key="item.id">
-        {{ item.name }} --- {{ item.id }}
+        <!-- :channel-id="item.id" 推荐的写法，是子组件为小驼峰命名(channelId)，绑定的时候是连字符形式 -->
+        <ArtList :channel-id="item.id"></ArtList>
       </van-tab>
     </van-tabs>
   </div>
@@ -24,9 +25,14 @@
 
 <script>
 // 导入接口
-import { getUserChannelsApi } from '../../api/homeApi'
+import { getUserChannelsApi } from '@/api/homeApi'
+// 导入文章列表组件
+import ArtList from '@/components/ArtList/ArtList.vue'
 export default {
   name: 'Home',
+  components: {
+    ArtList
+  },
   data () {
     return {
       // 标签页的激活项
@@ -43,7 +49,7 @@ export default {
     async initUserChannels () {
       // { data: res }解构出data且重命名为res
       const { data: res } = await getUserChannelsApi()
-      console.log(res)
+      // console.log(res)
       if (res.message === 'OK') {
         // 若数据获取成功 将数据存储到data中,供渲染模板使用
         this.channels = res.data.channels

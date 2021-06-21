@@ -19,7 +19,7 @@ module.exports = {
         modifyVars: {
           // 直接覆盖变量, 可以直接改主体，但是每次都需要重新启动服务(不推荐)
           // 'nav-bar-background-color': 'tomato',
-          // 或者可以通过 less 文件覆盖（文件路径为绝对路径）
+          // 或者可以通过 less 文件覆盖（文件路径为"绝对路径"）
           hack: `true; @import "${coverPath}";`
         }
       }

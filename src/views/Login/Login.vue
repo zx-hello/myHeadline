@@ -71,7 +71,7 @@ export default {
       const res = await loginApi(this.form)
       // console.log(res, res.data.data)
       if (res.data.message === 'OK') {
-        // // 以前的普通保存token
+        // // 以前的普通方式保存token
         // localStorage.setItem('token', JSON.stringify(res.data.data))
         // // 证明登录成功 1.将token保存到本地
         this.updateTokenInfo(res.data.data)

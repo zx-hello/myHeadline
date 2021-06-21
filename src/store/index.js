@@ -12,6 +12,7 @@ Vue.use(Vuex)
 // 初始化: 初始的不含任何数据的state对象
 let initState = {
   // 若后面还有需要新增的全局共享的数据时，只要挂到这里即可
+  // 内包含 { token, refresh_token } 两个属性
   tokenInfo: {}
 }
 
