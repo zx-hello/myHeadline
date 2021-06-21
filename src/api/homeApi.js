@@ -17,3 +17,19 @@ export const getArtListApi = function (id, time) {
     }
   })
 }
+
+// 将文章设置为不感兴趣的接口
+// id 为文章的id
+export const dislikeArticleApi = function (id) {
+  return request.post('/v1_0/article/dislikes', {
+    target: id
+  })
+}
+
+// 反馈文章垃圾内容的API接口 举报文章
+export const reportArticleApi = function (target, type) {
+  return request.post('/v1_0/article/reports', {
+    target, // 要举报的文章的 Id
+    type // 要举报的类型
+  })
+}

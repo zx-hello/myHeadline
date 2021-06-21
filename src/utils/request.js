@@ -2,7 +2,9 @@ import axios from 'axios'
 // 当组件当作API方法去使用，全局的引入就不起作用了，就需要单独引入
 // 当作标签去使用，就不需要再额外的导入了
 import { Toast } from 'vant'
+// vuex模块 在js文件中直接导入文件模块，就可以获取到store的数据
 import store from '@/store/index'
+// console.log(store)
 
 const request = axios.create({
   baseURL: 'http://www.liulongbin.top:8000'
@@ -13,6 +15,7 @@ const request = axios.create({
 
 // 请求拦截器
 request.interceptors.request.use(
+  // config是每次请求时候的配置选项
   function (config) {
     // 展示loading的效果
     Toast.loading({
@@ -22,10 +25,11 @@ request.interceptors.request.use(
       duration: 0
       // forbidClick: true // 禁止背景的点击(会严重影响用户体验)
     })
-    // 添加token认证
+    // 添加token认证 从vuex中获取token值
     // 1. 获取 token 值
     const tokenStr = store.state.tokenInfo.token
-    // 2. 判断 tokenStr 的值是否为空
+    // 2. 判断 tokenStr 的值
+    // 只有token值存在，才有必要挂载到请求头的Authorization属性中
     if (tokenStr) {
       // 3. 添加身份认证字段
       config.headers.Authorization = `Bearer ${tokenStr}`

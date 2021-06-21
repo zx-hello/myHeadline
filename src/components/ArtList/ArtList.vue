@@ -19,6 +19,7 @@
           v-for="item in artList"
           :key="item.id"
           :article="item"
+          @remove_article="removeArticle"
         ></ArtItem>
       </van-list>
     </van-pull-refresh>
@@ -115,6 +116,14 @@ export default {
     onRefresh () {
       // console.log('触发了下拉刷新')
       this.initArtList(true)
+    },
+    removeArticle (id) {
+      this.artList = this.artList.filter(item => item.art_id !== id)
+      // 判断length 这样当用户将一页的数据删除完了，也不会出现页面空白
+      // 导致上拉加载不生效的问题
+      if (this.artList.length < 10) {
+        this.initArtList()
+      }
     }
   }
 }
