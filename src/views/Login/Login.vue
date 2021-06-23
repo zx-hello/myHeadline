@@ -63,7 +63,7 @@ export default {
   methods: {
     ...mapMutations(['updateTokenInfo']),
     async onSubmit () {
-      // 只有当表单数据校验通过之后，才会调用此 login 函数
+      // 只有当表单数据校验通过之后，才会调用此 onSubmit 函数
       // console.log(this.form)
       // TODO：调用 API 接口，发起登录的请求
       // 若调用某个方法，若返回值是promise对象，则可以在方法之前加await关键字
@@ -74,6 +74,7 @@ export default {
         // // 以前的普通方式保存token
         // localStorage.setItem('token', JSON.stringify(res.data.data))
         // // 证明登录成功 1.将token保存到本地
+        // 保存在store/index.js文件中 mapMutations中的updateTokenInfo函数内
         this.updateTokenInfo(res.data.data)
         // // 2.跳转到首页
         this.$router.push('/')

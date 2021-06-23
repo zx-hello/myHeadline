@@ -37,6 +37,7 @@ export default {
   // 为文章列表组件，封装名为channelId的props
   // 表示要加载哪个频道下的文章列表数据
   props: {
+    // home.vue传来的数据 :channel-id="item.id"
     channelId: {
       type: Number,
       required: true
@@ -84,7 +85,7 @@ export default {
         // // 重置 loading 为 false，只有loading是false才会继续加载下一页的数据(若有下一页数据的时候)
         // this.loading = false
 
-        // 判断是否为下拉刷新
+        // 判断是否为下拉刷新 在函数onRefresh ()中进行调用传值
         if (isPullDown) {
           // 下拉刷新
           //  “新数据”在前，“旧数据”在后
@@ -118,6 +119,7 @@ export default {
       this.initArtList(true)
     },
     removeArticle (id) {
+      // id是 ArtItem.vue 页面通过子传父 传值过来的
       this.artList = this.artList.filter(item => item.art_id !== id)
       // 判断length 这样当用户将一页的数据删除完了，也不会出现页面空白
       // 导致上拉加载不生效的问题

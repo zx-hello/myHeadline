@@ -33,3 +33,15 @@ export const reportArticleApi = function (target, type) {
     type // 要举报的类型
   })
 }
+
+// 获取全部频道列表数据的接口API
+export const getAllChannelApi = function () {
+  return request.get('/v1_0/channels')
+}
+
+// 将用户自己新增的数据提交到数据库保存的接口API
+// channels 是一个数组，格式： [ {id, seq} ]
+// id --> 频道的id    seq --> 频道的序号(从1开始)
+export const updateUserChannelApi = function (channels) {
+  return request.put('/v1_0/user/channels', { channels })
+}

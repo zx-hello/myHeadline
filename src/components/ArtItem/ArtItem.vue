@@ -44,7 +44,7 @@
 
     <!-- 第一个层级 3个选项 -->
     <!-- get-container="body"这个属性是将这两个面板移除出van-pull-refresh组件内 -->
-    <!-- 这样在这个面板内就不会出现还可以出现下拉刷新的bug了 -->
+    <!-- 这样在这个面板内就不会出现还可以实现下拉刷新的bug了 -->
     <van-action-sheet get-container="body" v-model="show" cancel-text="取消">
       <!-- 第一级反馈面板 -->
       <div>
