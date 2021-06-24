@@ -9,7 +9,8 @@
       <!-- 右侧的插槽 -->
       <template #right>
         <!-- 修改颜色样式在cover.less  -->
-        <van-icon name="search" size="18" />
+        <!-- @click="$router.push('/search')"点击跳转到搜索页面 -->
+        <van-icon @click="$router.push('/search')" name="search" size="18" />
       </template>
     </van-nav-bar>
     <!-- 导航 列表选择区域 -->
@@ -197,7 +198,7 @@ export default {
       // 将“推荐”从频道列表中过滤出去
       const newChannels = this.channels
         .filter(item => item.name !== '推荐')
-        .map((item, i) => { return { id: item.id, seq: i + 1 } })
+        .map((item, i) => { return { id: item.id, seq: i } })
       // 调用API接口
       const { data: res } = await updateUserChannelApi(newChannels)
       // console.log(res)
@@ -205,7 +206,7 @@ export default {
         // 通过弹窗提示用户添加成功
         this.$notify({ type: 'warning', message: '更新成功' })
         // // 或者使用vant的组件引入也可以实现 提示
-        // Notify({ type: 'success', message: '更新成功' })
+        // Notify({ type: 'warning', message: '更新成功' })
       }
     },
     // 用户点击删除频道列表 移除指定的ID

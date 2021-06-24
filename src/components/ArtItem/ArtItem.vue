@@ -37,7 +37,7 @@
             {{ article.pubdate | dateFormat }}
           </span>
           <!-- 关闭按钮 -->
-          <van-icon name="cross" @click="show = !show" />
+          <van-icon v-if="closable" name="cross" @click="show = !show" />
         </div>
       </template>
     </van-cell>
@@ -91,6 +91,12 @@ export default {
     article: {
       type: Object, // 数据类型
       required: true // 必填项
+    },
+    // 控制是否展示❌的小图标
+    closable: {
+      type: Boolean,
+      // 默认值是 true 显示小图标
+      default: true
     }
   },
   data () {

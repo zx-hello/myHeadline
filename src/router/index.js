@@ -8,6 +8,10 @@ import Main from '@/views/Main/Main.vue'
 // 导入子路由组件
 import Home from '@/views/Main/Home.vue'
 import User from '@/views/Main/User.vue'
+// 导入搜索的组件
+import Search from '@/views/Search/Search.vue'
+// 导入搜索结果页
+import SearchResult from '@/views/Search/SearchResult.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +43,22 @@ const routes = [
         name: 'user'
       }
     ]
+  },
+  // 搜索页
+  {
+    path: '/search',
+    component: Search,
+    name: 'search'
+  },
+  // 搜索结果页
+  {
+    // 动态创建路由的路径
+    path: '/search/:kw',
+    component: SearchResult,
+    name: 'search-result',
+    // props: true 表示当前路由开启props传参
+    // 开启后，就可以在component指向的组件中，通过props来接收路由传来的参数
+    props: true
   }
 ]
 
