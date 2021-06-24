@@ -12,6 +12,8 @@ import User from '@/views/Main/User.vue'
 import Search from '@/views/Search/Search.vue'
 // 导入搜索结果页
 import SearchResult from '@/views/Search/SearchResult.vue'
+// 导入文章详情页
+import ArticleDetail from '../views/ArticleDetail/ArticleDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -58,6 +60,14 @@ const routes = [
     name: 'search-result',
     // props: true 表示当前路由开启props传参
     // 开启后，就可以在component指向的组件中，通过props来接收路由传来的参数
+    props: true
+  },
+  // 文章详情页的路由
+  {
+    path: '/article/:id',
+    component: ArticleDetail,
+    name: 'art-detail',
+    // 开启路由传参
     props: true
   }
 ]

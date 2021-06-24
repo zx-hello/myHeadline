@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <!-- this.$route 路由参数对象 -->
+  <!-- this.$router 路由的导航对象 里面有各种方法 back push等 -->
+  <div @click="$router.push(`/article/${article.art_id}`)">
     <!-- 文章信息展示 -->
     <van-cell>
       <!-- 标题区域的插槽 -->
@@ -37,14 +39,18 @@
             {{ article.pubdate | dateFormat }}
           </span>
           <!-- 关闭按钮 -->
-          <van-icon v-if="closable" name="cross" @click="show = !show" />
+          <!-- @click.stop 阻止事件冒泡
+               防止还没有展示关闭按钮的功能 就由于冒泡后跳转到文章详情页了
+          -->
+          <van-icon v-if="closable" name="cross" @click.stop="show = !show" />
         </div>
       </template>
     </van-cell>
 
     <!-- 第一个层级 3个选项 -->
-    <!-- get-container="body"这个属性是将这两个面板移除出van-pull-refresh组件内 -->
-    <!-- 这样在这个面板内就不会出现还可以实现下拉刷新的bug了 -->
+    <!-- get-container="body"这个属性是将这两个面板移除出van-pull-refresh组件内
+         这样在这个面板内就不会出现还可以实现下拉刷新的bug了
+    -->
     <van-action-sheet get-container="body" v-model="show" cancel-text="取消">
       <!-- 第一级反馈面板 -->
       <div>
