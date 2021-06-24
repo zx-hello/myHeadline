@@ -30,3 +30,36 @@ export const likeArticleApi = function (target) {
 export const dislikeArticleApi = function (id) {
   return request.delete(`/v1_0/article/likings/${id}`)
 }
+
+// 根据文章ID请求文章下评论的接口
+export const getCmListApi = function (source, offset) {
+  return request.get('/v1_0/comments', {
+    params: {
+      // a 表示获取文章下的评论
+      type: 'a',
+      // 文章的ID
+      source,
+      // 获取文章的数据的偏移量 就是页数
+      offset
+    }
+  })
+}
+
+// 点赞评论
+// 评论点赞的 API
+// target 评论的ID
+export const addLikeCmtApi = target => {
+  return request.post('/v1_0/comment/likings', { target })
+}
+
+// 取消点赞评论
+// id评论的ID
+export const delLikeCmtApi = id => {
+  return request.delete(`/v1_0/comment/likings/${id}`)
+}
+
+// 发表评论
+// target 是文章的ID   content 是评论的内容
+export const publishCommentApi = function (target, content) {
+  return request.post('/v1_0/comments', { target, content })
+}

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="article !== null">
     <!-- Header 区域 -->
     <van-nav-bar
       fixed
@@ -76,6 +76,9 @@
         </van-button>
       </div>
     </div>
+
+    <!-- 评论组件 -->
+    <ArtCmt :art-id="article.art_id"></ArtCmt>
   </div>
 </template>
 
@@ -84,14 +87,21 @@
 import { getArticleInfo, followUserApi, unFollowUserApi, likeArticleApi, dislikeArticleApi } from '../../api/articleApi'
 // 提示的信息
 import { Toast } from 'vant'
+// 导入文章评论组件
+import ArtCmt from '../../components/ArtCmt/ArtCmt.vue'
 export default {
   name: 'Article-Detail',
   // 接收路由router/index.js内传来的参数
   props: ['id'],
+  components: {
+    ArtCmt
+  },
   data () {
     return {
-      // 文章的详细对象
-      article: {}
+      // 文章的详细对象 为了让子组件的传值一开始不会得到undefined
+      // 并且在本组件的根节点写上v-if="article !== null"
+      // 这样在article是null时就不渲染页面，等到请求到数据后，article就不是空值，就可以渲染页面了
+      article: null
     }
   },
   created () {
