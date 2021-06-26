@@ -14,6 +14,8 @@ import Search from '@/views/Search/Search.vue'
 import SearchResult from '@/views/Search/SearchResult.vue'
 // 导入文章详情页
 import ArticleDetail from '../views/ArticleDetail/ArticleDetail.vue'
+// 导入用户信息的编辑信息页面
+import UserEdit from '../views/UserEdit/UserEdit.vue'
 
 Vue.use(VueRouter)
 
@@ -69,6 +71,12 @@ const routes = [
     name: 'art-detail',
     // 开启路由传参
     props: true
+  },
+  // 编辑用户信息的路由
+  {
+    path: '/user/edit',
+    component: UserEdit,
+    name: 'user-edit'
   }
 ]
 
