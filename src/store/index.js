@@ -50,6 +50,7 @@ export default new Vuex.Store({
       // 将数据存储到本地
       localStorage.setItem('state', JSON.stringify(state))
     },
+    // 用户的信息 user.vue页面
     updateUserInfo (state, payload) {
       // 将actions中发送请求过来的数据存储到userInfo对象中
       state.userInfo = payload

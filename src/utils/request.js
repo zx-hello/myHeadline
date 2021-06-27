@@ -6,6 +6,9 @@ import { Toast } from 'vant'
 import store from '@/store/index'
 // console.log(store)
 
+// 导入路由模块
+import router from '../router/index'
+
 const request = axios.create({
   baseURL: 'http://www.liulongbin.top:8000'
   // baseURL: 'http://192.168.141.73:8000' // 局域网，老师的IP
@@ -44,6 +47,7 @@ request.interceptors.request.use(
     return Promise.reject(error)
   }
 )
+
 // 响应拦截器
 request.interceptors.response.use(
   response => {
@@ -51,8 +55,59 @@ request.interceptors.response.use(
     Toast.clear()
     return response
   },
-  error => {
+  async error => {
     Toast.clear()
+    /**
+     * 方案一： 只是判断了token  并没有判断refresh_token
+     *       // 判断失败的status是否为401
+     *       // 401---->token过期--->导致有权限的接口调用失败
+     *       // console.dir(error) // error-->response-->status===401 证明token过期
+     *       if (error.response.status === 401) {
+     *       // 证明token过期了1.强制跳转到登录页面
+     *       router.replace(`/login?pre=${router.currentRoute.fullPath}`)
+     *       // 2.清空vuex和localStorage中的数据
+     *       store.commit('cleanState')
+     * }
+     */
+
+    // 方案二
+    // 从vuex中获取refresh_token的值
+    // 判断响应状态码是否为401
+    const refreshToken = store.state.tokenInfo.refresh_token
+    // 1.若有值，且状态码=401---> 执行换取token
+    if (error.response.status === 401 && refreshToken) {
+      // 使用try + catch去抓取错误
+      try {
+        // ----------这里表示只有token过期
+        // 换取token-->发送请求
+        // !!!!!注意 不能在这里直接使用request对象，去直接发送请求
+        // 使用axios发送请求 因为request挂在了请求拦截器
+        //     --> 其内部已经有了请求头了，其请求头是token
+        // 但是我们换token需要的是refresh_token 但是axios没有拦截器 所以使用axios
+        const { data: res } = await axios({
+          method: 'PUT',
+          // 此处的url必须是完整的url地址 因为没有提前配置过全局的路径
+          url: 'http://www.liulongbin.top:8000/v1_0/authorizations',
+          headers: {
+            Authorization: `Bearer ${refreshToken}`
+          }
+        })
+        // 拿到了换取的有效的token值
+        console.log(res)
+        // 1.将新token替换了旧的token
+        store.commit('updateTokenInfo', { token: res.data.token, refresh_token: refreshToken })
+        // 2.替换成功后，继续用户的操作
+        // 请求的method url
+        // console.dir(error) // error.config 内部包含了用户上一次失败请求时的地址等一切信息
+        return request(error.config)
+      } catch {
+        // ---------catch中代表token和refresh_token都过期了
+        // 清空本地存储的所有信息
+        store.commit('cleanState')
+        // 强制用户跳转到登录页
+        router.replace(`/login?pre=${router.currentRoute.fullPath}`)
+      }
+    }
     return Promise.reject(error)
   }
 )
