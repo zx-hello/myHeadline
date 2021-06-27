@@ -77,7 +77,17 @@ export default {
         // 保存在store/index.js文件中 mapMutations中的updateTokenInfo函数内
         this.updateTokenInfo(res.data.data)
         // // 2.跳转到首页
-        this.$router.push('/')
+        // 动态获取登录成功后需要跳转的页面
+        /**
+         * 用户在登陆前直接访问了一个有权限才可以访问的页面
+         * 那么在他登陆后,会直接跳转到其想访问的页面
+         * 若用户直接点击的是登录页面，登陆后，直接跳转到首页即可
+         */
+        const navPath = this.$route.query.pre || '/'
+        // 使用replace去跳转不会直接跳转到登录页面
+        // 而push跳转回去会跳转到登录页面
+        // 但是其实用户已经登录了 这样可以增强用户体验
+        this.$router.replace(navPath)
       }
     }
   }
