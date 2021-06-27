@@ -16,6 +16,8 @@ import SearchResult from '@/views/Search/SearchResult.vue'
 import ArticleDetail from '../views/ArticleDetail/ArticleDetail.vue'
 // 导入用户信息的编辑信息页面
 import UserEdit from '../views/UserEdit/UserEdit.vue'
+// 导入小思同学的页面
+import Chat from '../views/Chat/Chat.vue'
 
 Vue.use(VueRouter)
 
@@ -72,12 +74,14 @@ const routes = [
     // 开启路由传参
     props: true
   },
-  // 编辑用户信息的路由
+  // 编s辑用户信息的路由
   {
     path: '/user/edit',
     component: UserEdit,
     name: 'user-edit'
-  }
+  },
+  // 小思同学的路由
+  { path: '/chat', component: Chat, name: 'chat' }
 ]
 
 const router = new VueRouter({

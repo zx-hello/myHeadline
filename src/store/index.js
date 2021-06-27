@@ -91,6 +91,14 @@ export default new Vuex.Store({
       }
     }
   },
+  // getters本质是个计算属性
+  getters: {
+    // 在机器人聊天界面，渲染出用户的头像
+    avatar (state) {
+      // 若用户有头像，就使用用户自己的头像，若没有，就使用默认的头像
+      return state.userInfo.photo || 'https://img.yzcdn.cn/vant/cat.jpeg'
+    }
+  },
   modules: {
   }
 })

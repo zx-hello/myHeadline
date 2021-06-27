@@ -74,8 +74,8 @@ export default {
     }
   },
   // 在组件DOM渲染完成后，就立刻将输入框获取焦点
-  // 而且尽量不要直接获取DOM元素，尽量 使用ref去获取DOM元素 但是可以偶尔使用
-  // 因为有的时候ref获取DOM元素比较繁琐
+  // 而且尽量不要直接获取DOM元素，尽量 使用ref去获取DOM元素 但是可以【偶尔使用】
+  // 因为有的时候ref获取DOM元素比较繁琐 且ref获取DOM元素是异步的，需要配合$nextTick使用
   mounted () {
     // 获取DOM元素
     const inp = document.querySelector('input')
@@ -115,6 +115,7 @@ export default {
       if (res.message === 'OK') {
         // 在此处调用hlightKeywords函数，对options中的每一项进行高亮处理
         this.hlightKeywords(res.data.options)
+        // 将请求到的数据存储到搜索建议列表内
         this.suggList = res.data.options
 
         // 将搜索关键词存入到搜索历史中 history 且过滤数组中的每一项，不允许有重复的
@@ -131,7 +132,9 @@ export default {
       arr.forEach((item, i) => {
         // replace方法，第一个参数是正则，第二个参数可以是字符串或函数
         // val是正则进行匹配的每一项
-        // 这里的item是字符串 是简单类型 所以不可以写成 item = item.replace 这样修改不了原数组的数据
+        // 这里的item是字符串 是简单类型 所以不可以写成 item = item.replace
+        // 这样修改不了原数组的数据 简单类型的数据这样直接就相当于修改了
+        // 不同于复杂类型的数据 主要原因在于：存储的位置 栈和堆
         arr[i] = item.replace(reg, function (val) {
           return `<span style="color: tomato; font-weight: 700;">${val}</span>`
         })
@@ -143,6 +146,17 @@ export default {
       // e.target 和 e.currentTarget 的区别
       // e.target 用户点击的是哪个元素，e.target就指向的是哪个元素
       // e.currentTarget 表示当前【正在触发】事件的那个元素
+      /**
+       * 自己的理解：
+       * 因为target对于是点击的哪个元素就显示的那个元素
+       * 由于我们对于用户的搜索关键字做了处理 在外层包裹了span标签 做了样式处理
+       * 目的是使增强用户体验效果
+       * 但是若是用户直接点击的是我们做过样式处理的字符串 就相当于直接点击了span标签
+       * 那么target就是直接指向span，就不一定是用户所要搜索的目标
+       * 而currentTarget指向的是正在被触发事件的元素，包括其父级元素都会被触发
+       * 因为事件触发阶段包括事件【捕获阶段】和【事件冒泡】阶段
+       * 而target 直接 指向 事件源
+       */
       this.$router.push(`/search/${e.currentTarget.innerText}`)
     }
   }

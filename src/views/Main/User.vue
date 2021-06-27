@@ -40,7 +40,12 @@
         title="编辑资料"
         is-link
       />
-      <van-cell icon="chat-o" title="人工智障" is-link />
+      <van-cell
+        @click="$router.push({ name: 'chat' })"
+        icon="chat-o"
+        title="人工智障"
+        is-link
+      />
       <van-cell @click="goback" icon="warning-o" title="退出登录" is-link />
     </van-cell-group>
   </div>
