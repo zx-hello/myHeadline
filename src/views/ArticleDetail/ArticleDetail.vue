@@ -89,8 +89,15 @@ import { getArticleInfo, followUserApi, unFollowUserApi, likeArticleApi, dislike
 import { Toast } from 'vant'
 // 导入文章评论组件
 import ArtCmt from '../../components/ArtCmt/ArtCmt.vue'
+// 导入 highlight.js 模块
+import hljs from 'highlight.js'
+
+// 导入要混入的模块
+import mix from '../../mixins/scroll'
+
 export default {
   name: 'Article-Detail',
+  mixins: [mix],
   // 接收路由router/index.js内传来的参数
   props: ['id'],
   components: {
@@ -106,6 +113,14 @@ export default {
   },
   created () {
     this.initArticleInfo()
+  },
+  watch: {
+    // 当组件被缓存的时候下次再访问的时候，还是访问的上次一次页面
+    // 这不是用户所想看到的
+    id () {
+      this.article = null
+      this.initArticleInfo()
+    }
   },
   methods: {
     // 获取文章信息的请求
@@ -156,7 +171,17 @@ export default {
         this.article.attitude = -1
       }
     }
+  },
+  // 对代码块进行高亮处理
+  // 1. 当组件的 DOM 更新完毕之后
+  updated () {
+    // 2. 判断是否有文章的内容 有内容才会进行渲染
+    if (this.article) {
+      // 3. 对文章的内容进行高亮处理
+      hljs.highlightAll()
+    }
   }
+
 }
 </script>
 

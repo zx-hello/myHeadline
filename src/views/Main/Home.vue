@@ -13,9 +13,19 @@
         <van-icon @click="$router.push('/search')" name="search" size="18" />
       </template>
     </van-nav-bar>
+
     <!-- 导航 列表选择区域 -->
     <!-- v-model="active" 绑定当前激活标签对应的索引值，默认情况下启用第一个标签  -->
-    <van-tabs v-model="active" sticky offset-top="1.22667rem">
+    <!-- :before-change="" 会在将要切换标签页时触发，但是还没有真正的切换
+          @change="" 标签页切换完成的时候会触发这个事件
+     -->
+    <van-tabs
+      :before-change="beforeChange"
+      @change="onTabsChange"
+      v-model="active"
+      sticky
+      offset-top="1.22667rem"
+    >
       <van-tab :title="item.name" v-for="item in channels" :key="item.id">
         <!-- :channel-id="item.id" 推荐的写法，是子组件为小驼峰命名(channelId)，绑定的时候是连字符形式 -->
         <ArtList :channel-id="item.id"></ArtList>
@@ -126,10 +136,19 @@
 import { getUserChannelsApi, getAllChannelApi, updateUserChannelApi } from '@/api/homeApi'
 // 导入文章列表组件
 import ArtList from '@/components/ArtList/ArtList.vue'
+
+// 导入要混入的模块
+import mix from '../../mixins/scroll'
+
 // 导入组件,提示用户更新频道成功的提示组件
 // import { Notify } from 'vant'
+
+// 定义一个对象 存储频道的名称和滚动条的滚动位置
+const nameMapTop = {}
+
 export default {
   name: 'Home',
+  mixins: [mix],
   components: {
     ArtList
   },
@@ -223,8 +242,41 @@ export default {
         this.active = i
         this.show = false
       }
+    },
+    // 将要实现标签页的切换
+    beforeChange () {
+      // // 拿到了滚动条的滚动位置
+      // console.log(window.scrollY)
+      // // 频道的名称
+      // console.log(this.channels[this.active].name)
+      const name = this.channels[this.active].name
+      const top = window.scrollY
+      // 将拿到的频道名称和滚动条的位置存储到对象内
+      nameMapTop[name] = top
+
+      //  return true:表示允许标签页进行切换
+      return true
+    },
+    // 监听标签页切换完成的事件
+    async onTabsChange () {
+      // 根据索引值，拿到对应的标签页的name值
+      const name = this.channels[this.active].name
+      const top = nameMapTop[name] || 0
+      await this.$nextTick()
+      window.scrollTo(0, top)
     }
   }
+  // // 方案一：组件内的导航守卫
+  // beforeRouteLeave (to, from, next) {
+  //   // 导航离开组件该组件的对应路由时调用
+  //   // console.log(this) // this-->$route-->meta
+  //   // from.meta.top = window.scrollY // from也可以存储 效果等同于this
+  //   // 在通过路由导航的方式，离开Home.vue组件的时候
+  //   // 把滚动条的位置 记录到当前路由规则的么她元信息中
+  //   this.$route.meta.top = window.scrollY
+  //   next()
+  // }
+  // 方案二： 在src/mixins/scroll.js文件中 变成了一个公共的方法
 }
 </script>
 

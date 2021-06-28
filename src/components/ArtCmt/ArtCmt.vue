@@ -102,7 +102,7 @@ export default {
       // 总评论的条数
       totalCount: 0,
       // 是否正在请求上拉加载的数据
-      loading: false,
+      loading: true,
       // 所有数据是否加载完毕了
       finished: false,
       // 是否展示评论区域1（如果值为 true 则展示评论区域1；如果值为 false 则展示评论区域2）

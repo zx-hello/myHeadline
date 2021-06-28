@@ -58,8 +58,12 @@ import { mapActions, mapState, mapMutations } from 'vuex'
 import { Dialog } from 'vant'
 export default {
   name: 'User',
-  // 发送请求 请求用户基本的信息
-  created () {
+  // // 发送请求 请求用户基本的信息
+  // created () {
+  //   this.initUserInfo()
+  // },
+  // 使用组件激活的生命周期函数 去从新发送请求
+  activated () {
     this.initUserInfo()
   },
   // 获取用户信息的数组

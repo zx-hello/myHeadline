@@ -53,7 +53,11 @@ const routes = [
       {
         path: '',
         component: Home,
-        name: 'home'
+        name: 'home',
+        // meta里面定义的数据是自定义的
+        // 添加meta元信息 记录用户之前所停留的位置
+        // isRecord: 是否记录(名字是任意起的)  top: 记录纵向位置
+        meta: { isRecord: true, top: 0 }
       },
       // 子路由规则,不建议以/开头
       {
@@ -77,7 +81,8 @@ const routes = [
     name: 'search-result',
     // props: true 表示当前路由开启props传参
     // 开启后，就可以在component指向的组件中，通过props来接收路由传来的参数
-    props: true
+    props: true,
+    meta: { isRecord: true, top: 0 }
   },
   // 文章详情页的路由
   {
@@ -85,7 +90,8 @@ const routes = [
     component: ArticleDetail,
     name: 'art-detail',
     // 开启路由传参
-    props: true
+    props: true,
+    meta: { isRecord: true, top: 0 }
   },
   // 编s辑用户信息的路由
   {
@@ -129,6 +135,22 @@ router.beforeEach((to, from, next) => {
   } else {
     // 访问的是不需要权限的页面 直接放行
     next()
+  }
+})
+
+// 全局后置导航钩子
+router.afterEach((to, from) => {
+  // 若当前的路由的元信息中，isRecord处于开启状态 有元信息
+  if (to.meta.isRecord) {
+    // 页面的渲染是异步的 让滚动条的赋值变成异步的 这样DOM渲染后才会执行
+    // setTimeout(() => {
+    //   // 将元信息中的top的值 设置为读取到的滚动条的位置
+    //   window.scrollTo(0, to.meta.top)
+    // }, 0)
+    // 与延时器效果等同的是Vue的官方提供的nextTick
+    Vue.nextTick(function () {
+      window.scrollTo(0, to.meta.top)
+    })
   }
 })
 

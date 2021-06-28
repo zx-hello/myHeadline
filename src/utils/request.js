@@ -11,7 +11,6 @@ import router from '../router/index'
 
 const request = axios.create({
   baseURL: 'http://www.liulongbin.top:8000'
-  // baseURL: 'http://192.168.141.73:8000' // 局域网，老师的IP
 })
 
 // 拦截器的挂载，一定要放到request实例创建后

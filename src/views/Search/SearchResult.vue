@@ -34,10 +34,27 @@
 import { getSearchResultApi } from '@/api/searchApi'
 // 导入文章Item项组件 实现复用
 import ArtItem from '@/components/ArtItem/ArtItem.vue'
+
+// 导入要混入的模块
+import mix from '../../mixins/scroll'
+
 export default {
   name: 'SearchResult',
+  mixins: [mix],
   // 通过在路由index.js文件中,开启了props，传过来的参数
   props: ['kw'],
+  watch: {
+    // 由于缓存的问题 监听kw的变化
+    kw () {
+      // 将数据和页码等都清空
+      this.page = 1
+      this.artList = []
+      this.loading = false
+      this.finished = false
+      // 再发送请求
+      this.initSearchResult()
+    }
+  },
   components: {
     ArtItem
   },
@@ -48,7 +65,7 @@ export default {
       // 请求的结果数组 文章的列表数据
       artList: [],
       // 是否正在进行上拉加载数据
-      loading: false,
+      loading: true,
       // 是否所有的数据都加载完成
       finished: false
     }
