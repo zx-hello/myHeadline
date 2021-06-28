@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <title><%= htmlWebpackPlugin.options.title  %></title>
     <link
       rel="stylesheet"
       href="https://cdn.staticfile.org/highlight.js/10.6.0/styles/default.min.css"
@@ -13,13 +13,26 @@
   </head>
   <body>
     <noscript>
-      <strong
-        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
-        properly without JavaScript enabled. Please enable it to
-        continue.</strong
-      >
+      <strong>
+        We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
+        properly without JavaScript enabled. Please enable it to continue.
+      </strong>
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <!-- 如果当前时development开发模式 则无需渲染第三方script标签
+         如果是production模式 则渲染这些标签
+    -->
+    <% if (htmlWebpackPlugin.options.mode === 'production') { %>
+    <script src="https://cdn.staticfile.org/highlight.js/10.6.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.2.0/dist/vue-router.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuex@3.4.0/dist/vuex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.12.12/lib/vant.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.5/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.0.0/dist/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popmotion@9.3.5/dist/popmotion.min.js"></script>
+    <% } %>
   </body>
 </html>

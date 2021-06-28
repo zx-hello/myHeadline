@@ -5,22 +5,38 @@ import VueRouter from 'vue-router'
 import store from '../store/index'
 
 // 导入登录的组件页面
-import Login from '@/views/Login/Login.vue'
+// import Login from '@/views/Login/Login.vue'
+// 路由懒加载 语法
+const Login = () => import('@/views/Login/Login.vue')
 // 导入主页Main
-import Main from '@/views/Main/Main.vue'
+// import Main from '@/views/Main/Main.vue'
+const Main = () => import('@/views/Main/Main.vue')
+
 // 导入子路由组件
-import Home from '@/views/Main/Home.vue'
-import User from '@/views/Main/User.vue'
+// import Home from '@/views/Main/Home.vue'
+// import User from '@/views/Main/User.vue'
+const Home = () => import('@/views/Main/Home.vue')
+const User = () => import('@/views/Main/User.vue')
+
 // 导入搜索的组件
-import Search from '@/views/Search/Search.vue'
+// import Search from '@/views/Search/Search.vue'
+const Search = () => import('@/views/Search/Search.vue')
+
 // 导入搜索结果页
-import SearchResult from '@/views/Search/SearchResult.vue'
+// import SearchResult from '@/views/Search/SearchResult.vue'
+const SearchResult = () => import('@/views/Search/SearchResult.vue')
+
 // 导入文章详情页
-import ArticleDetail from '../views/ArticleDetail/ArticleDetail.vue'
+// import ArticleDetail from '../views/ArticleDetail/ArticleDetail.vue'
+const ArticleDetail = () => import('../views/ArticleDetail/ArticleDetail.vue')
+
 // 导入用户信息的编辑信息页面
-import UserEdit from '../views/UserEdit/UserEdit.vue'
+// import UserEdit from '../views/UserEdit/UserEdit.vue'
+const UserEdit = () => import('../views/UserEdit/UserEdit.vue')
+
 // 导入小思同学的页面
-import Chat from '../views/Chat/Chat.vue'
+// import Chat from '../views/Chat/Chat.vue'
+const Chat = () => import('../views/Chat/Chat.vue')
 
 // 解决vue-router内部报错的问题 不是程序员写的代码有问题而是包的内部有问题
 // 1. 将 VueRouter 本身提供的 $router.push 方法转存到常量中
